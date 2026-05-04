@@ -3,7 +3,7 @@ PROFILE := debug
 KERNEL := target/$(TARGET)/$(PROFILE)/oxide
 IMG := kernel8.img
 
-.PHONY: build img clean install-tools deploy
+.PHONY: build img clean install-tools deploy test
 
 build:
 	cargo build --target $(TARGET)
@@ -20,6 +20,9 @@ deploy: img
 	fi
 	cp $(IMG) $(SDCARD)/
 	cp boot/config.txt $(SDCARD)/
+
+test:
+	cargo test --lib --target x86_64-unknown-linux-gnu
 
 clean:
 	cargo clean

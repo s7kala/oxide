@@ -1,5 +1,6 @@
 use crate::arch::aarch64::mmio;
 use crate::board::rpi4;
+use oxide::expand_newlines;
 
 mod regs {
     // UART register offsets
@@ -92,11 +93,6 @@ impl Pl011Uart {
 
     /// Writes a string to the UART, converting '\n' to '\r\n' for proper line endings.
     pub fn puts(&self, s: &str) {
-        for b in s.bytes() {
-            if b == b'\n' {
-                self.putc(b'\r');
-            }
-            self.putc(b);
-        }
+        expand_newlines(s, |b| self.putc(b));
     }
 }
