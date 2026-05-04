@@ -1,0 +1,9 @@
+/target/
+/kernel8.img
+/docs/
+
+# Local/editor state
+.DS_Store
+*.swp
+*.swo
+.codex
