@@ -1,2 +1,3 @@
 pub const PERIPHERAL_BASE: usize = 0xFE00_0000;
+pub const GPIO_BASE: usize = PERIPHERAL_BASE + 0x0020_0000;
 pub const UART0_BASE: usize = PERIPHERAL_BASE + 0x0020_1000;
