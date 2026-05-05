@@ -10,12 +10,13 @@ mod board;
 mod drivers;
 mod io;
 mod panic;
+mod startup;
 
 #[no_mangle]
 pub extern "C" fn kernel_main() -> ! {
     io::console::init();
-    println!("oxide");
-    println!("uart initialized");
+
+    startup::diagnostics::print();
 
     loop {
         core::hint::spin_loop();
