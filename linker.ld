@@ -43,7 +43,7 @@ SECTIONS
     /DISCARD/ :
     {
         *(.comment)
-        *(.eh_frame)
+        *(.eh_frame*)
         *(.note .note.*)
     }
 }
