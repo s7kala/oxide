@@ -95,4 +95,14 @@ impl Pl011Uart {
     pub fn puts(&self, s: &str) {
         expand_newlines(s, |b| self.putc(b));
     }
+
+    pub fn emergency_init(&self) {
+        // For now this is the regular UART init. Later this can become a
+        // minimal re-init path with no locks, no interrupts, and no scheduler dependencies.
+        self.init();
+    }
+
+    pub fn emergency_puts(&self, s: &str) {
+        self.puts(s);
+    }
 }

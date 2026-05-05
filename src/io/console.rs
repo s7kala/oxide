@@ -25,7 +25,8 @@ pub fn init() {
 }
 
 pub fn panic_console_init() {
-    init();
+    UART.emergency_init();
+    UART_INITIALIZED.store(true, Ordering::Release);
 }
 
 pub fn puts(s: &str) {
@@ -33,9 +34,27 @@ pub fn puts(s: &str) {
     UART.puts(s);
 }
 
+pub fn panic_puts(s: &str) {
+    UART.emergency_puts(s);
+}
+
 #[doc(hidden)]
 pub fn _print(args: fmt::Arguments<'_>) {
     let mut console = Console;
+    let _ = console.write_fmt(args);
+}
+
+pub fn panic_print(args: fmt::Arguments<'_>) {
+    struct PanicConsole;
+
+    impl Write for PanicConsole {
+        fn write_str(&mut self, s: &str) -> fmt::Result {
+            crate::io::console::panic_puts(s);
+            Ok(())
+        }
+    }
+
+    let mut console = PanicConsole;
     let _ = console.write_fmt(args);
 }
 
