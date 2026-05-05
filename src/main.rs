@@ -14,7 +14,9 @@ mod panic;
 #[no_mangle]
 pub extern "C" fn kernel_main() -> ! {
     io::console::init();
-    io::console::puts("hello from oxide\n");
+    println!("oxide");
+    println!("uart value test: {}", 123);
+    println!("hex test: {:#x}", 0xFE20_1000usize);
 
     loop {
         core::hint::spin_loop();
