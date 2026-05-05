@@ -1,8 +1,10 @@
 use core::fmt::{self, Write};
+use core::sync::atomic::{AtomicBool, Ordering};
 
 use crate::drivers::uart::pl011::Pl011Uart;
 
 static UART: Pl011Uart = Pl011Uart::new();
+static UART_INITIALIZED: AtomicBool = AtomicBool::new(false);
 
 pub struct Console;
 
@@ -14,10 +16,20 @@ impl Write for Console {
 }
 
 pub fn init() {
+    if UART_INITIALIZED.load(Ordering::Acquire) {
+        return;
+    }
+
     UART.init();
+    UART_INITIALIZED.store(true, Ordering::Release);
+}
+
+pub fn panic_console_init() {
+    init();
 }
 
 pub fn puts(s: &str) {
+    init();
     UART.puts(s);
 }
 
